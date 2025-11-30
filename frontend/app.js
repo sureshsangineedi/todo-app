@@ -1,4 +1,4 @@
-const API="http://localhost:5000";
+const API="https://todo-app-h2bu.onrender.com";
 async function loadTodos(){
   const res=await fetch(API+"/todos");
   const todos=await res.json();
