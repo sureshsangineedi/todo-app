@@ -1,11 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta charset="UTF-8"><title>Simple Todo App</title></head>
+<head>
+<meta charset="UTF-8">
+<title>Animated Todo App</title>
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f0f3ff;
+    padding: 40px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .container {
+    background: white;
+    padding: 30px;
+    width: 350px;
+    border-radius: 15px;
+    box-shadow: 0px 4px 25px rgba(0,0,0,0.1);
+    animation: fadeIn 0.8s ease;
+  }
+
+  h1 {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  input {
+    width: 75%;
+    padding: 10px;
+    border: 2px solid #6c63ff;
+    border-radius: 5px;
+    outline: none;
+  }
+
+  button {
+    padding: 10px 15px;
+    background: #6c63ff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  button:hover {
+    background: #574bff;
+  }
+
+  ul {
+    margin-top: 20px;
+    padding-left: 0;
+  }
+
+  li {
+    list-style: none;
+    background: #eef0ff;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 7px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    animation: slideIn 0.4s ease;
+  }
+
+  .deleteBtn {
+    background: #ff4a4a;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: .3s;
+  }
+
+  .deleteBtn:hover {
+    background: #cc0000;
+  }
+
+  /* Animations */
+  @keyframes fadeIn {
+    from {opacity: 0; transform: translateY(-10px);}
+    to {opacity: 1; transform: translateY(0);}
+  }
+
+  @keyframes slideIn {
+    from {opacity: 0; transform: translateX(-20px);}
+    to {opacity: 1; transform: translateX(0);}
+  }
+</style>
+
+</head>
 <body>
-  <h1>sample project with backend</h1>
-  <h2>Todo List</h2>
+
+<div class="container">
+  <h1>Todo List</h1>
+  
   <input id="todoInput" placeholder="Enter todo..." />
   <button onclick="addTodo()">Add</button>
+
   <ul id="todoList"></ul>
-<script src="app.js"></script>
-</body></html>
+</div>
+
+<script>
+  const input = document.getElementById("todoInput");
+  const list = document.getElementById("todoList");
+
+  // Load saved todos
+  let todos = JSON.parse(localStorage.getItem("todos")) || [];
+  renderTodos();
+
+  function addTodo() {
+    const text = input.value.trim();
+    if (text === "") return alert("Please enter a todo!");
+
+    const todo = { id: Date.now(), text };
+    todos.push(todo);
+    saveTodos();
+    renderTodos();
+
+    input.value = "";
+  }
+
+  function deleteTodo(id) {
+    todos = todos.filter(t => t.id !== id);
+    saveTodos();
+    renderTodos();
+  }
+
+  function saveTodos() {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }
+
+  function renderTodos() {
+    list.innerHTML = "";
+    todos.forEach(todo => {
+      const li = document.createElement("li");
+      li.innerHTML = `
+        ${todo.text}
+        <button class="deleteBtn" onclick="deleteTodo(${todo.id})">Delete</button>
+      `;
+      list.appendChild(li);
+    });
+  }
+</script>
+
+</body>
+</html>
+
