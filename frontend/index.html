@@ -4,138 +4,109 @@
 <meta charset="UTF-8">
 <title>Responsive Todo App</title>
 
+<!-- ⭐ MOST IMPORTANT FOR ANDROID MOBILE VIEW -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
   body {
     font-family: Arial, sans-serif;
     background: #eef2ff;
-    padding: 40px;
+    margin: 0;
+    padding: 20px;
     display: flex;
     justify-content: center;
   }
 
   .container {
-    background: white;
-    padding: 25px;
-    width: 420px;
-    max-width: 95%;            /* MOBILE friendly */
+    background: #fff;
+    width: 100%;
+    max-width: 450px;
+    padding: 20px;
     border-radius: 15px;
-    box-shadow: 0px 4px 25px rgba(0,0,0,0.1);
+    box-shadow: 0px 4px 25px rgba(0,0,0,0.12);
     animation: fadeIn 0.8s ease;
   }
 
   h1 {
     text-align: center;
+    font-size: 24px;
     margin-bottom: 15px;
-    font-size: 26px;
   }
 
   .input-area {
     display: flex;
-    gap: 10px;
+    gap: 8px;
   }
 
   input {
     flex: 1;
     padding: 12px;
+    border-radius: 8px;
     border: 2px solid #6c63ff;
-    border-radius: 7px;
-    outline: none;
     font-size: 16px;
   }
 
   button {
-    padding: 12px 18px;
     background: #6c63ff;
     color: white;
     border: none;
-    border-radius: 7px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 16px;
     cursor: pointer;
-    transition: 0.3s;
-    font-size: 15px;
+    transition: .3s;
   }
 
-  button:hover {
-    background: #574bff;
+  button:active {
+    transform: scale(0.96);
   }
 
   ul {
-    margin-top: 20px;
     padding-left: 0;
+    margin-top: 20px;
   }
 
   li {
     list-style: none;
     background: #eef0ff;
     padding: 12px;
-    margin: 12px 0;
-    border-radius: 8px;
+    margin: 10px 0;
+    border-radius: 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    animation: slideIn 0.4s ease;
+    animation: slideIn 0.3s ease;
+    font-size: 16px;
   }
 
   .deleteBtn {
-    background: #ff4a4a;
-    color: white;
+    background: #ff4747;
     border: none;
-    padding: 7px 12px;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: .3s;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
     font-size: 14px;
+    cursor: pointer;
   }
 
-  .deleteBtn:hover {
-    background: #cc0000;
-  }
-
-  /* ✨ Animations */
+  /* Animations */
   @keyframes fadeIn {
-    from {opacity: 0; transform: translateY(-12px);}
-    to {opacity: 1; transform: translateY(0);}
+    from {opacity:0; transform: translateY(-10px);}
+    to {opacity:1; transform: translateY(0);}
   }
+
   @keyframes slideIn {
-    from {opacity: 0; transform: translateX(-25px);}
-    to {opacity: 1; transform: translateX(0);}
+    from {opacity:0; transform: translateX(-20px);}
+    to {opacity:1; transform: translateX(0);}
   }
 
-  /* 📱 MOBILE RESPONSIVE */
-  @media (max-width: 600px) {
-    body {
-      padding: 20px;
-    }
-
-    h1 {
-      font-size: 22px;
-    }
-
-    input {
-      font-size: 14px;
-      padding: 10px;
-    }
-
-    button {
-      padding: 10px 14px;
-      font-size: 14px;
-    }
-
-    li {
-      font-size: 14px;
-    }
+  /* ⭐ Mobile optimization */
+  @media (max-width: 500px) {
+    h1 { font-size: 22px; }
+    input { font-size: 14px; }
+    button { font-size: 14px; }
+    li { font-size: 15px; }
   }
-
-  /* 📲 TABLET VIEW */
-  @media (min-width: 600px) and (max-width: 900px) {
-    .container {
-      width: 520px;
-    }
-
-    input, button {
-      font-size: 17px;
-    }
-  }
-
 </style>
 
 </head>
@@ -156,28 +127,27 @@
   const input = document.getElementById("todoInput");
   const list = document.getElementById("todoList");
 
-  // Load todos
   let todos = JSON.parse(localStorage.getItem("todos")) || [];
   renderTodos();
 
   function addTodo() {
     const text = input.value.trim();
-    if (text === "") return alert("Please enter a todo!");
-
+    if (!text) return alert("Please enter a todo");
     const todo = { id: Date.now(), text };
+
     todos.push(todo);
-    saveTodos();
+    save();
     renderTodos();
     input.value = "";
   }
 
   function deleteTodo(id) {
     todos = todos.filter(t => t.id !== id);
-    saveTodos();
+    save();
     renderTodos();
   }
 
-  function saveTodos() {
+  function save() {
     localStorage.setItem("todos", JSON.stringify(todos));
   }
 
@@ -193,7 +163,7 @@
     });
   }
 </script>
-<script src="app.js"></script>
+<script src="./app.js"></script>
 
 </body>
 </html>
